@@ -55,9 +55,10 @@ public:
 		
 	CString Name;
 	CString Sex;
-	CTime Birth;
+	CString Birth;
 	CString Description;
 	Organization Org;
+	int Age;
 
 private:
 	Athlete(_RecordsetPtr);

@@ -1,6 +1,8 @@
 #pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
+#include <vector>
+#include "DBObject.h"
 
 
 // AthleteManagerView ¥∞ÃÂ ”Õº
@@ -29,11 +31,15 @@ protected:
 public:
 	CString str_Name;
 	CString str_Sex;
-	int i_Age;
+	CString str_Age;
 	CComboBox cb_Org;
 	CListCtrl list_Ath;
+
 	virtual void OnInitialUpdate();
 	afx_msg void OnBnClickedButtonQuery();
+
+private:
+	void AddAthToList(Athlete*);
 };
 
 

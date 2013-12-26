@@ -107,14 +107,21 @@ vector<Organization> Organization::GetAll(){
 }
 
 //Athlete
-Athlete::Athlete(void)
+Athlete::Athlete(void) : Age(-1)
 {
 }
 
 Athlete::Athlete(_RecordsetPtr reSet){
-	this->ID = reSet->GetCollect("id");
-	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("name"));
-	this->Description = (LPWSTR)(_bstr_t)(reSet->GetCollect("description"));
+	this->ID = reSet->GetCollect("athlete.id");
+	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("athlete.name"));
+	this->Sex = (LPWSTR)(_bstr_t)(reSet->GetCollect("sex"));
+	this->Birth = (LPWSTR)(_bstr_t)(reSet->GetCollect("birth"));
+	this->Description = (LPWSTR)(_bstr_t)(reSet->GetCollect("athlete.description"));
+
+	this->Org.ID = reSet->GetCollect("org.id");
+	this->Org.Name = reSet->GetCollect("org.name");
+	this->Org.Name_en = reSet->GetCollect("name_en");
+	this->Org.Description = reSet->GetCollect("org.description");
 }
 
 Athlete::~Athlete(void)
@@ -162,7 +169,24 @@ CString Athlete::GetIDSQL(){
 
 vector<Athlete> Athlete::Query(){
 	vector<Athlete> v_ath;
-	CString sql = _T("select * from athlete, org");
+	CString sql = _T("select athlete.id,athlete.name,athlete.sex,athlete.birth,athlete.description,\
+					 org.id,org.name,org.name_en,org.description from athlete, org where athlete.org_id=org.id ");
+	if(this->Name.Trim().GetLength() > 0){
+		sql.Append(_T("and athlete.name='"));
+		sql.Append(this->Name.Trim());
+		sql.Append(_T("' "));
+	}
+	if(this->Sex.GetLength() > 0){
+		sql.Append(_T("and athlete.sex='"));
+		sql.Append(this->Sex);
+		sql.Append(_T("' "));
+	}
+	if(this->Org.ID >= 0){
+		CString orgid;
+		orgid.Format(_T("and athlete.org_id=%ld"), this->Org.ID);
+		sql.Append(orgid);
+	}
+
 	_RecordsetPtr reSet = DBManager::QueryForRecordset(sql);
 	reSet->MoveFirst();
 	while(!reSet->adoEOF){

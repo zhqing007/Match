@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "DrawLotsManager.h"
 #include "AthleteManagerView.h"
-#include <vector>
-#include "DBObject.h"
 
 using namespace std;
 
@@ -18,7 +16,7 @@ AthleteManagerView::AthleteManagerView()
 	: CFormView(AthleteManagerView::IDD)
 	, str_Name(_T(""))
 	, str_Sex(_T(""))
-	, i_Age(0)
+	, str_Age(_T(""))
 {
 
 }
@@ -32,7 +30,7 @@ void AthleteManagerView::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_NAME, str_Name);
 	DDX_CBString(pDX, IDC_COMBO_SEX, str_Sex);
-	DDX_Text(pDX, IDC_EDIT_AGE, i_Age);
+	DDX_CBString(pDX, IDC_EDIT_AGE, str_Age);
 	DDX_Control(pDX, IDC_COMBO_ORG, cb_Org);
 	DDX_Control(pDX, IDC_LIST_ATH, list_Ath);
 }
@@ -93,6 +91,8 @@ void AthleteManagerView::OnInitialUpdate()
 		cb_Org.InsertString(index, i_d->Name);
 		cb_Org.SetItemData(index, i_d->ID);
 	}
+
+	str_Age = _T("");
 	// TODO: 在此添加专用代码和/或调用基类
 }
 
@@ -100,9 +100,49 @@ void AthleteManagerView::OnInitialUpdate()
 void AthleteManagerView::OnBnClickedButtonQuery()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	int curSel = cb_Org.GetCurSel();
-	CString text;
-	cb_Org.GetWindowText(text);
-	text.Format(_T("%s %d %d"), text, curSel, cb_Org.GetItemData(curSel));
-	MessageBox(text);
+	//int curSel = cb_Org.GetCurSel();
+	//CString text;
+	//cb_Org.GetWindowText(text);
+	//text.Format(_T("%s %d %d"), text, curSel, cb_Org.GetItemData(curSel));
+	//MessageBox(text);
+	UpdateData(TRUE);
+	Athlete ath;
+	ath.Name = str_Name;
+	ath.Sex = str_Sex;
+	int orgSel =  cb_Org.GetCurSel();
+	if(orgSel > 0)
+		ath.Org.ID = cb_Org.GetItemData(orgSel);
+
+	str_Age = str_Age.Trim();
+	if(str_Age.GetLength() != 0){
+		CTime t_age = GetCurrentTime();
+		int i_age = _ttoi(str_Age);
+		if(i_age <= 0){
+			MessageBox(_T("年龄不得为0!"), _T("提示"), MB_ICONINFORMATION | MB_OK);
+			return;
+		}
+		ath.Age = i_age;
+	}
+
+	vector<Athlete> v_athList = ath.Query();
+	vector<Athlete>::iterator i_d;
+	int index = 0;
+	for(i_d = v_athList.begin(); i_d != v_athList.end(); ++i_d, ++index){
+		AddAthToList(&(*i_d));
+	}
+}
+
+void AthleteManagerView::AddAthToList(Athlete* ath)
+{
+	LVITEMW vitem;
+	vitem.pszText = (LPWSTR)(LPCWSTR)ath->Name;
+	vitem.iItem = list_Ath.GetItemCount();
+	vitem.iSubItem = 0;
+	vitem.mask = LVIF_TEXT | LVIF_PARAM;
+	vitem.lParam = (LPARAM)ath->ID;
+	list_Ath.InsertItem(&vitem);
+	list_Ath.SetItemText(vitem.iItem, 1, ath->Sex);
+	list_Ath.SetItemText(vitem.iItem, 2, ath->Birth);
+	list_Ath.SetItemText(vitem.iItem, 3, ath->Org.Name);
+	list_Ath.SetItemText(vitem.iItem, 4, ath->Description);
 }
