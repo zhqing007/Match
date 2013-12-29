@@ -188,6 +188,8 @@ vector<Athlete> Athlete::Query(){
 	}
 
 	_RecordsetPtr reSet = DBManager::QueryForRecordset(sql);
+	int a = reSet->RecordCount;
+	if(reSet->RecordCount == 0) return v_ath;
 	reSet->MoveFirst();
 	while(!reSet->adoEOF){
 		v_ath.push_back(Athlete(reSet));

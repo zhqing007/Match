@@ -110,7 +110,7 @@ void AthleteManagerView::OnBnClickedButtonQuery()
 	ath.Name = str_Name;
 	ath.Sex = str_Sex;
 	int orgSel =  cb_Org.GetCurSel();
-	if(orgSel > 0)
+	if(orgSel >= 0)
 		ath.Org.ID = cb_Org.GetItemData(orgSel);
 
 	str_Age = str_Age.Trim();
