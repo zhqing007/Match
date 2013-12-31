@@ -75,6 +75,9 @@
     <ClInclude Include="Dialog_Add_Ath.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Dialog_Ath_Property.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawLotsManager.cpp">
@@ -108,6 +111,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Dialog_Add_Ath.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog_Ath_Property.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

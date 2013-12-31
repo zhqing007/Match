@@ -108,6 +108,7 @@
     <ClInclude Include="DBManager.h" />
     <ClInclude Include="DBObject.h" />
     <ClInclude Include="Dialog_Add_Ath.h" />
+    <ClInclude Include="Dialog_Ath_Property.h" />
     <ClInclude Include="Dialog_Org.h" />
     <ClInclude Include="DrawLotsManager.h" />
     <ClInclude Include="DrawLotsManagerDoc.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="DBManager.cpp" />
     <ClCompile Include="DBObject.cpp" />
     <ClCompile Include="Dialog_Add_Ath.cpp" />
+    <ClCompile Include="Dialog_Ath_Property.cpp" />
     <ClCompile Include="Dialog_Org.cpp" />
     <ClCompile Include="DrawLotsManager.cpp" />
     <ClCompile Include="DrawLotsManagerDoc.cpp" />

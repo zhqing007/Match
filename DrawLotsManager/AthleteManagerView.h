@@ -34,12 +34,15 @@ public:
 	CString str_Age;
 	CComboBox cb_Org;
 	CListCtrl list_Ath;
+	vector<Organization> allOrg;
 
 	virtual void OnInitialUpdate();
 	afx_msg void OnBnClickedButtonQuery();
 
 private:
 	void AddAthToList(Athlete*);
+public:
+	afx_msg void OnNMDblclkListAth(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 

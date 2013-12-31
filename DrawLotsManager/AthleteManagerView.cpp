@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "DrawLotsManager.h"
 #include "AthleteManagerView.h"
+#include "Dialog_Ath_Property.h"
 
 using namespace std;
 
@@ -37,6 +38,7 @@ void AthleteManagerView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(AthleteManagerView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_QUERY, &AthleteManagerView::OnBnClickedButtonQuery)
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST_ATH, &AthleteManagerView::OnNMDblclkListAth)
 END_MESSAGE_MAP()
 
 
@@ -66,7 +68,7 @@ void AthleteManagerView::OnInitialUpdate()
 	list_Ath.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 	list_Ath.InsertColumn(0, _T("姓名"), LVCFMT_CENTER);
 	list_Ath.InsertColumn(1, _T("性别"), LVCFMT_CENTER);
-	list_Ath.InsertColumn(2, _T("年龄"), LVCFMT_CENTER);
+	list_Ath.InsertColumn(2, _T("出生日期"), LVCFMT_CENTER);
 	list_Ath.InsertColumn(3, _T("单位"), LVCFMT_CENTER);
 	list_Ath.InsertColumn(4, _T("备注"), LVCFMT_CENTER);
 
@@ -84,7 +86,7 @@ void AthleteManagerView::OnInitialUpdate()
 	list_Ath.SetRedraw(TRUE);
 	list_Ath.Invalidate();
 
-	vector<Organization> allOrg = Organization::GetAll();
+	allOrg = Organization::GetAll();
 	vector<Organization>::iterator i_d;
 	int index = 0;
 	for(i_d = allOrg.begin(); i_d != allOrg.end(); ++i_d, ++index){
@@ -124,6 +126,7 @@ void AthleteManagerView::OnBnClickedButtonQuery()
 		ath.Age = i_age;
 	}
 
+	list_Ath.DeleteAllItems();
 	vector<Athlete> v_athList = ath.Query();
 	vector<Athlete>::iterator i_d;
 	int index = 0;
@@ -145,4 +148,30 @@ void AthleteManagerView::AddAthToList(Athlete* ath)
 	list_Ath.SetItemText(vitem.iItem, 2, ath->Birth);
 	list_Ath.SetItemText(vitem.iItem, 3, ath->Org.Name);
 	list_Ath.SetItemText(vitem.iItem, 4, ath->Description);
+}
+
+void AthleteManagerView::OnNMDblclkListAth(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	Athlete ath;
+
+	ath.ID = list_Ath.GetItemData(pNMItemActivate->iItem);
+	ath.Name = list_Ath.GetItemText(pNMItemActivate->iItem, 0);
+	ath.Sex = list_Ath.GetItemText(pNMItemActivate->iItem, 1);
+	ath.Birth = list_Ath.GetItemText(pNMItemActivate->iItem, 2);
+	ath.Org.Name = list_Ath.GetItemText(pNMItemActivate->iItem, 3);
+	ath.Description = list_Ath.GetItemText(pNMItemActivate->iItem, 4);
+
+	CDialog_Ath_Property org_pro(&ath, this);
+	int n_Modal = org_pro.DoModal();
+	if(n_Modal == IDOK){
+		//list_org.SetItemText(pNMItemActivate->iItem, 0, org.Name);
+		//list_org.SetItemText(pNMItemActivate->iItem, 1, org.Name_en);
+		//list_org.SetItemText(pNMItemActivate->iItem, 2, org.Description);
+	}
+
+
+
+	*pResult = 0;
 }

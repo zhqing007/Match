@@ -172,9 +172,9 @@ vector<Athlete> Athlete::Query(){
 	CString sql = _T("select athlete.id,athlete.name,athlete.sex,athlete.birth,athlete.description,\
 					 org.id,org.name,org.name_en,org.description from athlete, org where athlete.org_id=org.id ");
 	if(this->Name.Trim().GetLength() > 0){
-		sql.Append(_T("and athlete.name='"));
+		sql.Append(_T("and athlete.name like '%%"));
 		sql.Append(this->Name.Trim());
-		sql.Append(_T("' "));
+		sql.Append(_T("%%' "));
 	}
 	if(this->Sex.GetLength() > 0){
 		sql.Append(_T("and athlete.sex='"));
@@ -183,7 +183,16 @@ vector<Athlete> Athlete::Query(){
 	}
 	if(this->Org.ID >= 0){
 		CString orgid;
-		orgid.Format(_T("and athlete.org_id=%ld"), this->Org.ID);
+		orgid.Format(_T("and athlete.org_id=%ld "), this->Org.ID);
+		sql.Append(orgid);
+	}
+	if(this->Age > 0){
+		CTime t_curr = CTime::GetCurrentTime();
+		CTime str_MaxAge = CTime::GetCurrentTime() - CTimeSpan((Age + 1) * 365 - 1, 0, 0, 0);
+		CTime str_MinAge = CTime::GetCurrentTime() - CTimeSpan(Age * 365, 0, 0, 0);
+		CString orgid;
+		orgid.Format(_T("and athlete.birth>=#%s# and athlete.birth<=#%s# "), 
+			str_MaxAge.Format("%Y/%m/%d"), str_MinAge.Format("%Y/%m/%d"));
 		sql.Append(orgid);
 	}
 
