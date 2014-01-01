@@ -1,8 +1,9 @@
 #include "StdAfx.h"
 #include "DBObject.h"
 
-int DBObjcet::AddNew(){
-	if(GetCount(FALSE) > 0) return NOTONLYONE;
+int DBObjcet::AddNew(BOOL CheckNolyOne){
+	if(CheckNolyOne)
+		if(GetCount(FALSE) > 0) return NOTONLYONE;
 	DBManager::Execute(this->GetAddNewSQL());
 	_RecordsetPtr reSet = DBManager::QueryForRecordset(this->GetIDSQL());
 	reSet->MoveFirst();
@@ -15,8 +16,9 @@ int DBObjcet::Delete(){
 	return DBManager::Execute(this->GetDeleteSQL());
 }
 
-int DBObjcet::Update(){
-	if(GetCount(TRUE) > 0) return NOTONLYONE;
+int DBObjcet::Update(BOOL CheckNolyOne){
+	if(CheckNolyOne)
+		if(GetCount(TRUE) > 0) return NOTONLYONE;
 	return DBManager::Execute(this->GetUpdateSQL());
 }
 
@@ -144,20 +146,21 @@ CString Athlete::GetDeleteSQL(){
 
 CString Athlete::GetUpdateSQL(){
 	CString sql;
-	sql.Format(_T("update athlete set name='%s',name_en='%s',description='%s' where id=%ld"),
-		Name, Name, Description, ID);
+	sql.Format(_T("update athlete set org_id=%ld,name='%s',sex='%s',birth=#%s#,description='%s' where id=%ld"),
+		Org.ID, Name, Sex, Birth, Description, ID);
 	return sql;
 }
 
 CString Athlete::GetCountSQL(){
 	CString sql;
-	sql.Format(_T("select count(*) as cou from athlete where name='%s'"), Name);
+	sql.Format(_T("select count(*) as cou from athlete where name='%s' and org_id=%ld"), Name, Org.ID);
 	return sql;
 }
 
 CString Athlete::GetCountNoCuSQL(){
 	CString sql;
-	sql.Format(_T("select count(*) as cou from athlete where name='%s' and id<>%d"), Name, ID);
+	sql.Format(_T("select count(*) as cou from athlete where name='%s' \
+				  and org_id=%ld and id<>%d"), Name, Org.ID, ID);
 	return sql;
 }
 

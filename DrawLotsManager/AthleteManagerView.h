@@ -43,6 +43,8 @@ private:
 	void AddAthToList(Athlete*);
 public:
 	afx_msg void OnNMDblclkListAth(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButtonDel();
+	afx_msg void OnBnClickedButtonAdd();
 };
 
 

@@ -13,8 +13,8 @@ protected :
 	virtual CString GetIDSQL() = 0;
 
 public:
-	int Update();
-	int AddNew();
+	int Update(BOOL CheckNolyOne = TRUE);
+	int AddNew(BOOL CheckNolyOne = TRUE);
 	int Delete();
 	int GetCount(BOOL);
 

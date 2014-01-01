@@ -33,4 +33,6 @@ private:
 public:
 	virtual BOOL OnInitDialog();
 	CComboBox cb_org;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnCbnCloseupComboOrg();
 };

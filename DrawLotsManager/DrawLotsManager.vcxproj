@@ -104,6 +104,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AthleteManagerView.h" />
+    <ClInclude Include="CGridColumnTrait.h" />
+    <ClInclude Include="CGridColumnTraitCombo.h" />
+    <ClInclude Include="CGridColumnTraitDateTime.h" />
+    <ClInclude Include="CGridColumnTraitEdit.h" />
+    <ClInclude Include="CGridColumnTraitHyperLink.h" />
+    <ClInclude Include="CGridColumnTraitImage.h" />
+    <ClInclude Include="CGridColumnTraitMultilineEdit.h" />
+    <ClInclude Include="CGridColumnTraitText.h" />
+    <ClInclude Include="CGridColumnTraitVisitor.h" />
+    <ClInclude Include="CGridListCtrlEx.h" />
+    <ClInclude Include="CGridListCtrlGroups.h" />
+    <ClInclude Include="CGridRowTrait.h" />
+    <ClInclude Include="CGridRowTraitText.h" />
+    <ClInclude Include="CGridRowTraitVisitor.h" />
+    <ClInclude Include="CGridRowTraitXP.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="DBManager.h" />
     <ClInclude Include="DBObject.h" />
@@ -117,9 +132,21 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="ViewConfigSection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AthleteManagerView.cpp" />
+    <ClCompile Include="CGridColumnTraitCombo.cpp" />
+    <ClCompile Include="CGridColumnTraitDateTime.cpp" />
+    <ClCompile Include="CGridColumnTraitEdit.cpp" />
+    <ClCompile Include="CGridColumnTraitHyperLink.cpp" />
+    <ClCompile Include="CGridColumnTraitImage.cpp" />
+    <ClCompile Include="CGridColumnTraitMultilineEdit.cpp" />
+    <ClCompile Include="CGridColumnTraitText.cpp" />
+    <ClCompile Include="CGridListCtrlEx.cpp" />
+    <ClCompile Include="CGridListCtrlGroups.cpp" />
+    <ClCompile Include="CGridRowTraitText.cpp" />
+    <ClCompile Include="CGridRowTraitXP.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DBManager.cpp" />
     <ClCompile Include="DBObject.cpp" />
@@ -134,6 +161,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ViewConfigSection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DrawLotsManager.rc" />

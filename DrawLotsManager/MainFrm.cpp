@@ -28,7 +28,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_COMMAND(ID_MENU_ATHLETE, &CMainFrame::OnMenuAthlete)
 	ON_COMMAND(ID_MENU_ORG, &CMainFrame::OnMenuOrg)
-	ON_COMMAND(ID_32778, &CMainFrame::On32778)
+//	ON_COMMAND(ID_32778, &CMainFrame::On32778)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -277,12 +277,4 @@ void CMainFrame::OnMenuOrg()
 	// TODO: 在此添加命令处理程序代码
 	CDialog_Org orgMa;
 	orgMa.DoModal();
-}
-
-
-void CMainFrame::On32778()
-{
-	// TODO: 在此添加命令处理程序代码
-	CDialog_Add_Ath tt;
-	tt.DoModal();
 }

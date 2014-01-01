@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="GridListEX">
+      <UniqueIdentifier>{b36f8ee3-0053-4c98-86d4-8761c22fb388}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -78,6 +81,54 @@
     <ClInclude Include="Dialog_Ath_Property.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CGridColumnTrait.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitCombo.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitDateTime.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitEdit.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitHyperLink.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitImage.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitMultilineEdit.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitText.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridColumnTraitVisitor.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridListCtrlEx.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridListCtrlGroups.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridRowTrait.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridRowTraitText.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridRowTraitVisitor.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="CGridRowTraitXP.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewConfigSection.h">
+      <Filter>GridListEX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawLotsManager.cpp">
@@ -115,6 +166,42 @@
     </ClCompile>
     <ClCompile Include="Dialog_Ath_Property.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitCombo.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitDateTime.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitEdit.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitHyperLink.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitImage.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitMultilineEdit.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridColumnTraitText.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridListCtrlEx.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridListCtrlGroups.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridRowTraitText.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CGridRowTraitXP.cpp">
+      <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewConfigSection.cpp">
+      <Filter>GridListEX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

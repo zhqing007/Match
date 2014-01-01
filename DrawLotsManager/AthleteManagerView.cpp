@@ -5,6 +5,7 @@
 #include "DrawLotsManager.h"
 #include "AthleteManagerView.h"
 #include "Dialog_Ath_Property.h"
+#include "Dialog_Add_Ath.h"
 
 using namespace std;
 
@@ -39,6 +40,8 @@ void AthleteManagerView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(AthleteManagerView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_QUERY, &AthleteManagerView::OnBnClickedButtonQuery)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_ATH, &AthleteManagerView::OnNMDblclkListAth)
+	ON_BN_CLICKED(IDC_BUTTON_DEL, &AthleteManagerView::OnBnClickedButtonDel)
+	ON_BN_CLICKED(IDC_BUTTON_ADD, &AthleteManagerView::OnBnClickedButtonAdd)
 END_MESSAGE_MAP()
 
 
@@ -166,12 +169,34 @@ void AthleteManagerView::OnNMDblclkListAth(NMHDR *pNMHDR, LRESULT *pResult)
 	CDialog_Ath_Property org_pro(&ath, this);
 	int n_Modal = org_pro.DoModal();
 	if(n_Modal == IDOK){
-		//list_org.SetItemText(pNMItemActivate->iItem, 0, org.Name);
-		//list_org.SetItemText(pNMItemActivate->iItem, 1, org.Name_en);
-		//list_org.SetItemText(pNMItemActivate->iItem, 2, org.Description);
+		list_Ath.SetItemText(pNMItemActivate->iItem, 0, ath.Name);
+		list_Ath.SetItemText(pNMItemActivate->iItem, 1, ath.Sex);
+		list_Ath.SetItemText(pNMItemActivate->iItem, 2, ath.Birth);
+		list_Ath.SetItemText(pNMItemActivate->iItem, 3, ath.Org.Name);
+		list_Ath.SetItemText(pNMItemActivate->iItem, 4, ath.Description);
 	}
 
 
 
 	*pResult = 0;
+}
+
+void AthleteManagerView::OnBnClickedButtonDel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if(MessageBox(_T("确定删除所选人员吗？"), _T("确认"), MB_YESNO) == IDNO)
+		return;
+	int n_se = list_Ath.GetSelectionMark();
+	Athlete ath;
+	ath.ID = list_Ath.GetItemData(n_se);
+	ath.Delete();
+	list_Ath.DeleteItem(n_se);
+}
+
+
+void AthleteManagerView::OnBnClickedButtonAdd()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDialog_Add_Ath addAth(this);
+	addAth.DoModal();
 }

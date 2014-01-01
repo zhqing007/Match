@@ -1,5 +1,6 @@
 #pragma once
 #include "afxcmn.h"
+#include "CGridListCtrlEx.h"
 
 
 // CDialog_Add_Ath ¶Ô»°¿ò
@@ -21,5 +22,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	CListCtrl list_Ath;
+	CGridListCtrlEx list_Ath;
 };

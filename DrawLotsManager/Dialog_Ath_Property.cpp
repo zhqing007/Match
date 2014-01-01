@@ -35,6 +35,8 @@ void CDialog_Ath_Property::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDialog_Ath_Property, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CDialog_Ath_Property::OnBnClickedOk)
+	ON_CBN_CLOSEUP(IDC_COMBO_ORG, &CDialog_Ath_Property::OnCbnCloseupComboOrg)
 END_MESSAGE_MAP()
 
 
@@ -57,4 +59,31 @@ BOOL CDialog_Ath_Property::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
+}
+
+void CDialog_Ath_Property::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	cb_org.GetWindowText(ath->Org.Name);
+	ath->Org.ID = cb_org.GetItemData(cb_org.GetCurSel());
+	if(ath->Name.GetLength() == 0){
+		MessageBox(_T("姓名不得为空。"), _T("修改错误"), MB_OK|MB_ICONWARNING);
+		return;
+	}
+	if(ath->Update() == NOTONLYONE){
+		if(MessageBox(_T("数据库中已经存在同名且同队的运动员，\n是否仍然添加？"),
+			_T("是否继续"), MB_YESNO|MB_ICONQUESTION) == IDNO)
+			return;
+		ath->Update(FALSE);
+	}
+	CDialogEx::OnOK();
+}
+
+
+void CDialog_Ath_Property::OnCbnCloseupComboOrg()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//cb_org.GetWindowText(ath->Org.Name);
+	//ath->Org.ID = cb_org.GetItemData(cb_org.GetCurSel());	
 }
