@@ -259,6 +259,12 @@ void CGridColumnTraitCombo::LoadList(const CSimpleMap<DWORD_PTR,CString>& comboL
 		m_pComboBox->SetCurSel(nCurSel);
 }
 
+DWORD_PTR CGridColumnTraitCombo::GetSelKey(CString value){
+	int index = m_ComboList.FindVal(value);
+	if (index == -1) return -1;
+	return m_ComboList.GetKeyAt(index);
+}
+
 
 CGridEditorComboBoxEdit::CGridEditorComboBoxEdit()
 {
@@ -512,10 +518,10 @@ void CGridEditorComboBox::OnDropDown()
 //------------------------------------------------------------------------
 void CGridEditorComboBox::OnCloseUp()
 {
-	CGridListCtrlEx* pwnd = (CGridListCtrlEx*)this->GetParent();
-	if(m_Row + 1 == pwnd->GetItemCount()){
-		pwnd->AddEmptyRow();
-	}
+	//CGridListCtrlEx* pwnd = (CGridListCtrlEx*)this->GetParent();
+	//if(m_Row + 1 == pwnd->GetItemCount()){
+	//	pwnd->AddEmptyRow();
+	//}
 }
 
 //------------------------------------------------------------------------

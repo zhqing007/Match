@@ -23,4 +23,5 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	CGridListCtrlEx list_Ath;
+	afx_msg void OnBnClickedOk();
 };

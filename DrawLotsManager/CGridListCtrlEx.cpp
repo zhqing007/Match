@@ -4206,6 +4206,7 @@ void CGridListCtrlEx::OnPaint()
 
 void CGridListCtrlEx::AddEmptyRow(){
 	int nItem = GetItemCount();
+	//if(GetItemText(nItem - 1, 1).Compare(NEWCOLTEXT) == 0) return;
 	this->InsertItem(nItem, _T(""));
 	this->SetItemText(nItem, 1, NEWCOLTEXT);
 	for(int col = 2; col < GetColumnCount(); ++col){

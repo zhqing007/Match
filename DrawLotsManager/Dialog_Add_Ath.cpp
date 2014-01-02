@@ -34,6 +34,7 @@ void CDialog_Add_Ath::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDialog_Add_Ath, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CDialog_Add_Ath::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -72,7 +73,7 @@ BOOL CDialog_Add_Ath::OnInitDialog()
 
 	// Insert data into list-control by copying from datamodel
 	list_Ath.InsertItem(0, _T(""));
-	list_Ath.SetItemText(0, 1, _T("<新记录>"));
+	list_Ath.SetItemText(0, 1, NEWCOLTEXT);
 	list_Ath.SetItemText(0, 2, _T("男"));
 	list_Ath.SetItemText(0, 3, _T("1979/06/04"));
 	list_Ath.SetItemText(0, 4, _T(""));
@@ -80,4 +81,41 @@ BOOL CDialog_Add_Ath::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
+}
+
+
+void CDialog_Add_Ath::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int row = list_Ath.GetItemCount() - 1;
+	while(row >= 0) {
+		if(list_Ath.GetItemText(row, 1).Compare(NEWCOLTEXT) == 0){
+			--row;
+			continue;
+		}
+		Athlete ath;
+		ath.Name = list_Ath.GetItemText(row, 1);
+		ath.Sex = list_Ath.GetItemText(row, 2);
+		ath.Birth = list_Ath.GetItemText(row, 3);
+		ath.Org.Name = list_Ath.GetItemText(row, 4);
+		CGridColumnTraitCombo* ccb = (CGridColumnTraitCombo*)list_Ath.GetCellColumnTrait(row, 4);
+		ath.Org.ID = ccb->GetSelKey(ath.Org.Name);
+		ath.Description = list_Ath.GetItemText(row, 5);
+
+		if(ath.AddNew() == TRUE)
+			list_Ath.DeleteItem(row);
+		--row;
+	}
+
+	if(ath.AddNew() == NOTONLYONE){
+		CString msg;
+		msg.Format(_T("数据库中已经存在同名且同队的运动员，是否仍然添加？"
+		if(MessageBox(_T("数据库中已经存在同名且同队的运动员，\n是否仍然添加？"),
+			_T("是否继续"), MB_YESNO|MB_ICONQUESTION) == IDNO)
+			return;
+		ath.AddNew(FALSE);
+	}
+
+
+	CDialogEx::OnOK();
 }

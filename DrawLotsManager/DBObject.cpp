@@ -133,8 +133,8 @@ Athlete::~Athlete(void)
 CString Athlete::GetAddNewSQL(){
 	CString sql;
 	sql.Format(_T("insert into athlete (org_id, name, sex, birth, description)\
-				  values ('%ld', '%s','%s', '%s', '%s')"),
-				  Org.ID, Name, Sex, Birth, Description);
+				  values (%ld, '%s','%s', #%s#, '%s')"),
+				  Org.ID >= 0 ? Org.ID : -1, Name, Sex, Birth, Description);
 	return sql;
 }
 

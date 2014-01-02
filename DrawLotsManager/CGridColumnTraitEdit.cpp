@@ -149,7 +149,8 @@ CWnd* CGridColumnTraitEdit::OnEditBegin(CGridListCtrlEx& owner, int nRow, int nC
 	pEdit->SetSel(0, -1, 0);
 	if(cellText.Compare(NEWCOLTEXT) == 0 && nRow != 0){
 		for(int col = 2; col < owner.GetColumnCount(); ++col){
-			owner.SetItemText(nRow, col, owner.GetItemText(nRow - 1, col));
+			if(owner.GetItemText(nRow, col).GetLength() <= 0)
+				owner.SetItemText(nRow, col, owner.GetItemText(nRow - 1, col));
 		}
 	}
 	return pEdit;
@@ -280,6 +281,7 @@ void CGridEditorText::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值	
 	CEdit::OnChar(nChar, nRepCnt, nFlags);
 	CGridListCtrlEx* pwnd = (CGridListCtrlEx*)this->GetParent();
-	if(m_Row + 1 == pwnd->GetItemCount())
+
+	if(m_Col == 1 && m_Row + 1 == pwnd->GetItemCount())
 		pwnd->AddEmptyRow();
 }

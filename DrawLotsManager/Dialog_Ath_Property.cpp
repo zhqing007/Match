@@ -72,7 +72,7 @@ void CDialog_Ath_Property::OnBnClickedOk()
 		return;
 	}
 	if(ath->Update() == NOTONLYONE){
-		if(MessageBox(_T("数据库中已经存在同名且同队的运动员，\n是否仍然添加？"),
+		if(MessageBox(_T("数据库中已经存在同名且同队的运动员，\n是否仍然修改？"),
 			_T("是否继续"), MB_YESNO|MB_ICONQUESTION) == IDNO)
 			return;
 		ath->Update(FALSE);

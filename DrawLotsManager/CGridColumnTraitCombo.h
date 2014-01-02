@@ -36,6 +36,8 @@ public:
 	virtual CWnd* OnEditBegin(CGridListCtrlEx& owner, int nRow, int nCol, CPoint pt) { return CGridColumnTraitImage::OnEditBegin(owner, nRow, nCol, pt); }
 	virtual void  OnEditEnd();
 
+	DWORD_PTR GetSelKey(CString);
+
 protected:
 	virtual void Accept(CGridColumnTraitVisitor& visitor);
 	virtual CComboBox* CreateComboBox(CGridListCtrlEx& owner, int nRow, int nCol, DWORD dwStyle, const CRect& rect);
