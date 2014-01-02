@@ -114,16 +114,22 @@ Athlete::Athlete(void) : Age(-1)
 }
 
 Athlete::Athlete(_RecordsetPtr reSet){
-	this->ID = reSet->GetCollect("athlete.id");
-	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("athlete.name"));
-	this->Sex = (LPWSTR)(_bstr_t)(reSet->GetCollect("sex"));
-	this->Birth = (LPWSTR)(_bstr_t)(reSet->GetCollect("birth"));
-	this->Description = (LPWSTR)(_bstr_t)(reSet->GetCollect("athlete.description"));
-
-	this->Org.ID = reSet->GetCollect("org.id");
-	this->Org.Name = reSet->GetCollect("org.name");
-	this->Org.Name_en = reSet->GetCollect("name_en");
-	this->Org.Description = reSet->GetCollect("org.description");
+	this->ID = reSet->GetCollect("id");
+	_variant_t var = reSet->GetCollect("athlete.name");
+	this->Name = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	var = reSet->GetCollect("sex");
+	this->Sex = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	var = reSet->GetCollect("birth");
+	this->Birth = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	var = reSet->GetCollect("athlete.description");
+	this->Description = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	this->Org.ID = reSet->GetCollect("org_id");
+	var = reSet->GetCollect("org.name");
+	this->Org.Name = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	var = reSet->GetCollect("name_en");
+	this->Org.Name_en = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	var = reSet->GetCollect("org.description");
+	this->Org.Description = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
 }
 
 Athlete::~Athlete(void)
@@ -173,7 +179,8 @@ CString Athlete::GetIDSQL(){
 vector<Athlete> Athlete::Query(){
 	vector<Athlete> v_ath;
 	CString sql = _T("select athlete.id,athlete.name,athlete.sex,athlete.birth,athlete.description,\
-					 org.id,org.name,org.name_en,org.description from athlete, org where athlete.org_id=org.id ");
+					 athlete.org_id,org.name,org.name_en,org.description \
+					 from athlete left join org on athlete.org_id=org.id where 1=1 ");
 	if(this->Name.Trim().GetLength() > 0){
 		sql.Append(_T("and athlete.name like '%%"));
 		sql.Append(this->Name.Trim());

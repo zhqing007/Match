@@ -87,6 +87,7 @@ BOOL CDialog_Add_Ath::OnInitDialog()
 void CDialog_Add_Ath::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	vector<Athlete> v_sames;
 	int row = list_Ath.GetItemCount() - 1;
 	while(row >= 0) {
 		if(list_Ath.GetItemText(row, 1).Compare(NEWCOLTEXT) == 0){
@@ -104,18 +105,18 @@ void CDialog_Add_Ath::OnBnClickedOk()
 
 		if(ath.AddNew() == TRUE)
 			list_Ath.DeleteItem(row);
+		else
+			v_sames.push_back(ath);
 		--row;
 	}
 
-	if(ath.AddNew() == NOTONLYONE){
-		CString msg;
-		msg.Format(_T("数据库中已经存在同名且同队的运动员，是否仍然添加？"
-		if(MessageBox(_T("数据库中已经存在同名且同队的运动员，\n是否仍然添加？"),
+	if(v_sames.size() > 0){
+		if(MessageBox(_T("列表中剩余的是已经存在同名且同队的运动员，\n是否仍然添加？"),
 			_T("是否继续"), MB_YESNO|MB_ICONQUESTION) == IDNO)
 			return;
-		ath.AddNew(FALSE);
+		vector<Athlete>::iterator i_s;
+		for(i_s = v_sames.begin(); i_s != v_sames.end(); ++i_s)
+			i_s->AddNew(FALSE);
 	}
-
-
 	CDialogEx::OnOK();
 }

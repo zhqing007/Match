@@ -184,7 +184,7 @@ void AthleteManagerView::OnNMDblclkListAth(NMHDR *pNMHDR, LRESULT *pResult)
 void AthleteManagerView::OnBnClickedButtonDel()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	if(MessageBox(_T("确定删除所选人员吗？"), _T("确认"), MB_YESNO) == IDNO)
+	if(MessageBox(_T("确定删除所选人员吗？"), _T("确认"), MB_YESNO | MB_ICONQUESTION) == IDNO)
 		return;
 	int n_se = list_Ath.GetSelectionMark();
 	Athlete ath;
