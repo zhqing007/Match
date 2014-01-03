@@ -217,3 +217,72 @@ vector<Athlete> Athlete::Query(){
 	reSet->Close();
 	return v_ath;
 }
+
+//Meeting
+Meeting::Meeting(void)
+{
+}
+
+Meeting::Meeting(_RecordsetPtr reSet){
+	this->ID = reSet->GetCollect("id");
+	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("name"));
+	this->StartDate = (LPWSTR)(_bstr_t)(reSet->GetCollect("startdate"));
+	_variant_t var = reSet->GetCollect("address");
+	this->Address = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+}
+
+Meeting::~Meeting(void)
+{
+}
+
+CString Meeting::GetAddNewSQL(){
+	CString sql;
+	sql.Format(_T("insert into sports_meeting (name,startdate,address)\
+				  values ('%s',#%s#,'%s')"),
+				  Name, StartDate, Address);
+	return sql;
+}
+
+CString Meeting::GetDeleteSQL(){
+	CString sql;
+	sql.Format(_T("delete from sports_meeting where id=%ld"), ID);
+	return sql;
+}
+
+CString Meeting::GetUpdateSQL(){
+	CString sql;
+	sql.Format(_T("update sports_meeting set name='%s',startdate=#%s#,address='%s' where id=%ld"),
+		Name, StartDate, Address, ID);
+	return sql;
+}
+
+CString Meeting::GetCountSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from sports_meeting where name='%s'"), Name);
+	return sql;
+}
+
+CString Meeting::GetCountNoCuSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from sports_meeting where name='%s' and id<>%d"), Name, ID);
+	return sql;
+}
+
+CString Meeting::GetIDSQL(){
+	CString sql;
+	sql.Format(_T("select id  from sports_meeting where name='%s'"), Name);
+	return sql;
+}
+
+vector<Meeting> Meeting::GetAll(){
+	vector<Meeting> v_meeting;
+	_RecordsetPtr reSet = DBManager::QueryForRecordset(_T("select * from sports_meeting"));
+	if(reSet->GetRecordCount() == 0) return v_meeting;
+	reSet->MoveFirst();
+	while(!reSet->adoEOF){
+		v_meeting.push_back(Meeting(reSet));
+		reSet->MoveNext();
+	}
+	reSet->Close();
+	return v_meeting;
+}

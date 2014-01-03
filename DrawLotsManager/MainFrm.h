@@ -49,6 +49,7 @@ public:
 	afx_msg void On32775();
 	afx_msg void OnMenuOrg();
 //	afx_msg void On32778();
+	afx_msg void OnMenuMeeting();
 };
 
 

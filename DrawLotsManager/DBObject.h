@@ -71,3 +71,26 @@ protected :
 	CString GetCountNoCuSQL();
 	CString GetIDSQL();
 };
+
+class Meeting : public DBObjcet
+{
+public:
+	Meeting(void);	
+	~Meeting(void);
+	static vector<Meeting> GetAll();
+		
+	CString Name;
+	CString StartDate;
+	CString Address;
+
+private:
+	Meeting(_RecordsetPtr);
+
+protected :
+	CString GetUpdateSQL();
+	CString GetAddNewSQL();
+	CString GetDeleteSQL();
+	CString GetCountSQL();
+	CString GetCountNoCuSQL();
+	CString GetIDSQL();
+};

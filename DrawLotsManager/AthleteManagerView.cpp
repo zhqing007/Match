@@ -193,7 +193,6 @@ void AthleteManagerView::OnBnClickedButtonDel()
 	list_Ath.DeleteItem(n_se);
 }
 
-
 void AthleteManagerView::OnBnClickedButtonAdd()
 {
 	// TODO: 在此添加控件通知处理程序代码

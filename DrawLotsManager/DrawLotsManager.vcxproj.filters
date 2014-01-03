@@ -129,6 +129,9 @@
     <ClInclude Include="ViewConfigSection.h">
       <Filter>GridListEX</Filter>
     </ClInclude>
+    <ClInclude Include="Dialog_Meeting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawLotsManager.cpp">
@@ -202,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="ViewConfigSection.cpp">
       <Filter>GridListEX</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog_Meeting.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
