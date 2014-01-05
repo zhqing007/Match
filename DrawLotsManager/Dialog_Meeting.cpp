@@ -30,6 +30,9 @@ void CDialog_Meeting::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDialog_Meeting, CDialogEx)
 	ON_BN_CLICKED(IDC_BU_M_ADD, &CDialog_Meeting::OnBnClickedBuMAdd)
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &CDialog_Meeting::OnNMDblclkList1)
+	//ON_NOTIFY(NM_CLICK, IDC_LIST1, &CDialog_Meeting::OnNMClickList1)
+	ON_BN_CLICKED(IDOK, &CDialog_Meeting::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -92,6 +95,38 @@ void CDialog_Meeting::OnBnClickedBuMAdd()
 	AddMeetingToList(&(dia_Add.currMeeting));
 }
 
+void CDialog_Meeting::OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CDialog_Add_Meeting dia_Modify(TRUE);
+	dia_Modify.currMeeting.ID = list_meeting.GetItemData(pNMItemActivate->iItem);
+	dia_Modify.currMeeting.Name = list_meeting.GetItemText(pNMItemActivate->iItem, 0);
+	dia_Modify.currMeeting.StartDate = list_meeting.GetItemText(pNMItemActivate->iItem, 1);
+	dia_Modify.currMeeting.Address = list_meeting.GetItemText(pNMItemActivate->iItem, 2);	
+	int n_Modal = dia_Modify.DoModal();
+	if(n_Modal == IDOK){
+		list_meeting.SetItemText(pNMItemActivate->iItem, 0, dia_Modify.currMeeting.Name);
+		list_meeting.SetItemText(pNMItemActivate->iItem, 1, dia_Modify.currMeeting.StartDate);
+		list_meeting.SetItemText(pNMItemActivate->iItem, 2, dia_Modify.currMeeting.Address);
+	}
+
+	*pResult = 0;
+}
+
+void CDialog_Meeting::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int s = list_meeting.GetSelectionMark();
+	if(s == -1){
+		MessageBox(_T("请选择一个运动会！"), _T("提示"), MB_OK | MB_ICONWARNING);
+		return;
+	}
+	meetingID = list_meeting.GetItemData(s);
+	meetingName = list_meeting.GetItemText(s, 0);
+	CDialogEx::OnOK();
+}
+
 
 // D:\Match\DrawLotsManager\Dialog_Meeting.cpp : 实现文件
 //
@@ -107,7 +142,6 @@ CDialog_Add_Meeting::CDialog_Add_Meeting(BOOL _isModify, CWnd* pParent /*=NULL*/
 	if(!isModify){
 		currMeeting.StartDate = CTime::GetCurrentTime().Format("%Y/%m/%d");
 	}
-
 }
 
 CDialog_Add_Meeting::~CDialog_Add_Meeting()
@@ -140,10 +174,18 @@ void CDialog_Add_Meeting::OnBnClickedOk()
 		return;
 	}
 	//currMeeting.StartDate = t_MeetingStart.Format("%Y/%m/%d");
-	if(currMeeting.AddNew() == NOTONLYONE){
-		MessageBox(_T("已经存在同名的运动会名称，请修改！"),
-			_T("提示"), MB_OK | MB_ICONWARNING);
-		return;
+	if(this->isModify){
+		if(currMeeting.Update() == NOTONLYONE){
+			MessageBox(_T("已经存在同名的运动会名称，请修改！"),
+				_T("提示"), MB_OK | MB_ICONWARNING);
+			return;
+		}
 	}
+	else
+		if(currMeeting.AddNew() == NOTONLYONE){
+			MessageBox(_T("已经存在同名的运动会名称，请修改！"),
+				_T("提示"), MB_OK | MB_ICONWARNING);
+			return;
+		}
 	CDialogEx::OnOK();
 }

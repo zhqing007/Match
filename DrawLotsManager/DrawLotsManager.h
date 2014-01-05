@@ -28,6 +28,7 @@ public:
 // й╣ож
 	BOOL  m_bHiColorIcons;
 	CMultiDocTemplate* m_pTemplateAthlete;
+	CMultiDocTemplate* m_pTemplateMeeting;
 
 	virtual void PreLoadState();
 	virtual void LoadCustomState();

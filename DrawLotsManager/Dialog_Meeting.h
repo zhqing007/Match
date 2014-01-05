@@ -24,11 +24,15 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	CListCtrl list_meeting;
+	LONG meetingID;
+	CString meetingName;
 
 private:
 	void AddMeetingToList(Meeting*);
 public:
 	afx_msg void OnBnClickedBuMAdd();
+	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedOk();
 };
 #pragma once
 

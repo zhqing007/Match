@@ -9,6 +9,7 @@
 #include "Dialog_Org.h"
 #include "Dialog_Add_Ath.h"
 #include "Dialog_Meeting.h"
+#include "MeetingManagerView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -287,4 +288,23 @@ void CMainFrame::OnMenuMeeting()
 	// TODO: 在此添加命令处理程序代码
 	CDialog_Meeting d_meeting;
 	d_meeting.DoModal();
+
+	CMDIChildWnd* pActiveChild = MDIGetActive();
+	CDocument* pDocument;
+	if(pActiveChild == NULL || (pDocument = pActiveChild->GetActiveDocument()) == NULL){
+		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
+		return;
+	}
+
+	CDocTemplate* pTemplate = ((CDrawLotsManagerApp*)AfxGetApp())->m_pTemplateMeeting;
+	ASSERT_VALID(pTemplate);
+	CFrameWnd* pFrame = pTemplate->CreateNewFrame(pDocument, pActiveChild);
+	if(pFrame == NULL){
+		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
+		return;
+	}
+	pTemplate->InitialUpdateFrame(pFrame, pDocument);
+	MeetingManagerView* m_View = (MeetingManagerView*)pFrame->GetActiveView();
+	m_View->meetingID = d_meeting.meetingID;
+	m_View->meetingName = d_meeting.meetingName;
 }

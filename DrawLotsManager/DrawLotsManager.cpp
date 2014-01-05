@@ -12,6 +12,7 @@
 #include "DrawLotsManagerDoc.h"
 #include "DrawLotsManagerView.h"
 #include "AthleteManagerView.h"
+#include "MeetingManagerView.h"
 #include "DBManager.h"
 
 #ifdef _DEBUG
@@ -125,6 +126,10 @@ BOOL CDrawLotsManagerApp::InitInstance()
 		RUNTIME_CLASS(CDrawLotsManagerDoc),
 		RUNTIME_CLASS(CChildFrame), // 自定义 MDI 子框架
 		RUNTIME_CLASS(AthleteManagerView));
+	m_pTemplateMeeting = new CMultiDocTemplate(IDR_DrawLotsManagerTYPE,
+		RUNTIME_CLASS(CDrawLotsManagerDoc),
+		RUNTIME_CLASS(CChildFrame), // 自定义 MDI 子框架
+		RUNTIME_CLASS(MeetingManagerView));
 
 	// 创建主 MDI 框架窗口
 	CMainFrame* pMainFrame = new CMainFrame;
