@@ -10,6 +10,7 @@
 #include "Dialog_Add_Ath.h"
 #include "Dialog_Meeting.h"
 #include "MeetingManagerView.h"
+#include "DrawLotsManagerDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -295,6 +296,9 @@ void CMainFrame::OnMenuMeeting()
 		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
 		return;
 	}
+	CDrawLotsManagerDoc* drawDoc = (CDrawLotsManagerDoc*)pDocument;
+	drawDoc->l_Meeting_ID = d_meeting.meetingID;
+	drawDoc->str_Meeting_Name = d_meeting.meetingName;
 
 	CDocTemplate* pTemplate = ((CDrawLotsManagerApp*)AfxGetApp())->m_pTemplateMeeting;
 	ASSERT_VALID(pTemplate);
@@ -304,7 +308,7 @@ void CMainFrame::OnMenuMeeting()
 		return;
 	}
 	pTemplate->InitialUpdateFrame(pFrame, pDocument);
-	MeetingManagerView* m_View = (MeetingManagerView*)pFrame->GetActiveView();
-	m_View->meetingID = d_meeting.meetingID;
-	m_View->meetingName = d_meeting.meetingName;
+	//MeetingManagerView* m_View = (MeetingManagerView*)pFrame->GetActiveView();
+	//m_View->meetingID = d_meeting.meetingID;
+	//m_View->meetingName = d_meeting.meetingName;
 }

@@ -14,6 +14,8 @@ protected: // 仅从序列化创建
 
 // 特性
 public:
+	LONG l_Meeting_ID;
+	CString str_Meeting_Name;
 
 // 操作
 public:
