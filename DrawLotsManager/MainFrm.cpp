@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_MENU_ORG, &CMainFrame::OnMenuOrg)
 //	ON_COMMAND(ID_32778, &CMainFrame::On32778)
 ON_COMMAND(ID_MENU_MEETING, &CMainFrame::OnMenuMeeting)
+ON_COMMAND(ID_tt, &CMainFrame::Ontt)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -288,7 +289,7 @@ void CMainFrame::OnMenuMeeting()
 {
 	// TODO: 在此添加命令处理程序代码
 	CDialog_Meeting d_meeting;
-	d_meeting.DoModal();
+	if(d_meeting.DoModal() != IDOK) return;
 
 	CMDIChildWnd* pActiveChild = MDIGetActive();
 	CDocument* pDocument;
@@ -311,4 +312,11 @@ void CMainFrame::OnMenuMeeting()
 	//MeetingManagerView* m_View = (MeetingManagerView*)pFrame->GetActiveView();
 	//m_View->meetingID = d_meeting.meetingID;
 	//m_View->meetingName = d_meeting.meetingName;
+}
+
+
+void CMainFrame::Ontt()
+{
+	// TODO: 在此添加命令处理程序代码
+	DBManager::QueryForRecordset(_T("select * from _match"));
 }

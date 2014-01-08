@@ -5,6 +5,7 @@
 #include "DrawLotsManager.h"
 #include "MeetingManagerView.h"
 #include "DrawLotsManagerDoc.h"
+
 // MatchView
 
 IMPLEMENT_DYNCREATE(MatchView, CFormView)
@@ -22,6 +23,7 @@ MatchView::~MatchView()
 void MatchView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST1, list_match);
 }
 
 BEGIN_MESSAGE_MAP(MatchView, CFormView)
@@ -158,14 +160,15 @@ int MeetingManagerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rc;  
     GetWindowRect(&rc);  
 
-	VERIFY(m_wndSplitter.CreateStatic(this, 1, 2, WS_CHILD | WS_VISIBLE));  
-	
+	VERIFY(m_wndSplitter.CreateStatic(this, 1, 2, WS_CHILD | WS_VISIBLE)); 	
 	CCreateContext *pContext = (CCreateContext*) lpCreateStruct->lpCreateParams;
 	
-	m_wndSplitter.CreateView(0,0,RUNTIME_CLASS(MatchView), CSize(300, rc.Height()), pContext);
+	m_wndSplitter.CreateView(0,0,RUNTIME_CLASS(MatchView), CSize(300, rc.Height()), pContext);	
 	m_wndSplitter.CreateView(0,1,RUNTIME_CLASS(MatchOrgAthView), CSize(0, rc.Height()), pContext);
-
-	m_wndSplitter.MoveWindow(0, 0, rc.Width(), rc.Height());  
+	MatchView* pViewRes = (MatchView*)m_wndSplitter.GetPane(0,0);
+	pViewRes->meetingID = drawDoc->l_Meeting_ID;
+	pViewRes->rightView = (MatchOrgAthView*)m_wndSplitter.GetPane(0,1);
+	m_wndSplitter.MoveWindow(0, 0, rc.Width(), rc.Height());
 	
 	return 0;
 }
@@ -177,4 +180,50 @@ void MeetingManagerView::OnSize(UINT nType, int cx, int cy)
 
 	// TODO: 在此处添加消息处理程序代码
 	m_wndSplitter.MoveWindow(0, 0, cx, cy);
+}
+
+
+void MatchView::OnInitialUpdate()
+{
+	CFormView::OnInitialUpdate();
+
+	// TODO: 在此添加专用代码和/或调用基类
+	list_match.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+
+	list_match.InsertColumn(0, _T("比赛名称"), LVCFMT_CENTER);
+	list_match.InsertColumn(1, _T("举办时间"), LVCFMT_CENTER);
+
+	CHeaderCtrl* pHeader = list_match.GetHeaderCtrl();
+	int nCurrWidth, nColHdrWidth;
+	ASSERT(pHeader);
+	list_match.SetRedraw(FALSE);
+	for(int iCurrCol = 0; iCurrCol < pHeader->GetItemCount(); ++iCurrCol){
+		list_match.SetColumnWidth(iCurrCol, LVSCW_AUTOSIZE);
+		nCurrWidth = list_match.GetColumnWidth(iCurrCol);
+		list_match.SetColumnWidth(iCurrCol, LVSCW_AUTOSIZE_USEHEADER);
+		nColHdrWidth = list_match.GetColumnWidth(iCurrCol);
+		list_match.SetColumnWidth(iCurrCol, max(nCurrWidth, nColHdrWidth));
+	}
+	list_match.SetRedraw(TRUE);
+	list_match.Invalidate();
+
+	Match mat;
+	mat._meeting.ID = this->meetingID;
+	vector<Match> v_match = mat.Query();
+	vector<Match>::iterator i_d;
+	for(i_d = v_match.begin(); i_d != v_match.end(); ++i_d){
+		AddMatToList(&(*i_d));
+	}
+}
+
+void MatchView::AddMatToList(Match* mat)
+{
+	LVITEMW vitem;
+	vitem.pszText = (LPWSTR)(LPCWSTR)mat->Name;
+	vitem.iItem = list_match.GetItemCount();
+	vitem.iSubItem = 0;
+	vitem.mask = LVIF_TEXT | LVIF_PARAM;
+	vitem.lParam = (LPARAM)mat->ID;
+	list_match.InsertItem(&vitem);
+	list_match.SetItemText(vitem.iItem, 1, mat->StartDate);
 }

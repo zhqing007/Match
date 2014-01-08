@@ -94,3 +94,53 @@ protected :
 	CString GetCountNoCuSQL();
 	CString GetIDSQL();
 };
+
+class MatchType : public DBObjcet
+{
+public:
+	MatchType(void);	
+	~MatchType(void);
+	static vector<MatchType> GetAll();
+		
+	CString Name;
+	int Type;
+
+private:
+	MatchType(_RecordsetPtr);
+
+protected :
+	CString GetUpdateSQL();
+	CString GetAddNewSQL();
+	CString GetDeleteSQL();
+	CString GetCountSQL();
+	CString GetCountNoCuSQL();
+	CString GetIDSQL();
+};
+
+class Match : public DBObjcet
+{
+public:
+	Match(void);	
+	~Match(void);
+	vector<Match> Query();
+		
+	CString Name;
+	CString StartDate;
+	CString Address;
+	CString Sex;
+	int Minage;
+	int Maxage;
+	MatchType _matchType;
+	Meeting _meeting;
+
+private:
+	Match(_RecordsetPtr);
+
+protected :
+	CString GetUpdateSQL();
+	CString GetAddNewSQL();
+	CString GetDeleteSQL();
+	CString GetCountSQL();
+	CString GetCountNoCuSQL();
+	CString GetIDSQL();
+};

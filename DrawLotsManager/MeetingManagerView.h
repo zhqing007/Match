@@ -1,6 +1,9 @@
 #pragma once
-// MatchView 窗体视图
+#include "afxcmn.h"
+#include "DBObject.h"
 
+class MatchOrgAthView;
+// MatchView 窗体视图
 class MatchView : public CFormView
 {
 	DECLARE_DYNCREATE(MatchView)
@@ -22,6 +25,13 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+public:
+	LONG meetingID;
+	MatchOrgAthView* rightView;
+	CListCtrl list_match;
+
+	virtual void OnInitialUpdate();
+	void AddMatToList(Match*);
 };
 
 

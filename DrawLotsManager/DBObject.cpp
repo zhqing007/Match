@@ -286,3 +286,148 @@ vector<Meeting> Meeting::GetAll(){
 	reSet->Close();
 	return v_meeting;
 }
+
+//Match
+Match::Match(void)
+{
+}
+
+Match::Match(_RecordsetPtr reSet){
+	this->ID = reSet->GetCollect("id");
+	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("name"));
+	this->StartDate = (LPWSTR)(_bstr_t)(reSet->GetCollect("startdate"));
+	_variant_t var = reSet->GetCollect("address");
+	this->Address = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	var = reSet->GetCollect("sex");
+	this->Sex = (LPWSTR)(_bstr_t)(var.vt <= VT_NULL ? _T("") : var);
+	this->Minage = reSet->GetCollect("minage");
+	this->Maxage = reSet->GetCollect("maxage");
+	this->_matchType.ID = reSet->GetCollect("matchtype");
+	this->_meeting.ID = reSet->GetCollect("meeting_id");
+}
+
+Match::~Match(void)
+{
+}
+
+CString Match::GetAddNewSQL(){
+	CString sql;
+	sql.Format(_T("insert into _match (name,startdate,address,sex,minage,maxage,matchtype,meeting_id)\
+				  values ('%s',#%s#,'%s','%s',%d,%d,%d,%d)"),
+				  Name, StartDate, Address, Sex, Minage, Maxage, _matchType.ID, _meeting.ID);
+	return sql;
+}
+
+CString Match::GetDeleteSQL(){
+	CString sql;
+	sql.Format(_T("delete from _match where id=%ld"), ID);
+	return sql;
+}
+
+CString Match::GetUpdateSQL(){
+	CString sql;
+	sql.Format(_T("update _match set name='%s',startdate=#%s#,address='%s',sex='%s'\
+				  ,minage=%d,maxage=%d,matchtype=%d,meeting_id=%d where id=%ld"),
+		Name, StartDate, Address, Sex, Minage, Maxage, _matchType.ID, _meeting.ID, ID);
+	return sql;
+}
+
+CString Match::GetCountSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from _match where name='%s'"), Name);
+	return sql;
+}
+
+CString Match::GetCountNoCuSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from _match where name='%s' and id<>%d"), Name, ID);
+	return sql;
+}
+
+CString Match::GetIDSQL(){
+	CString sql;
+	sql.Format(_T("select id  from _match where name='%s'"), Name);
+	return sql;
+}
+
+vector<Match> Match::Query(){
+	vector<Match> v_match;
+	CString sql;
+	sql.Format(_T("select * from _match where meeting_id=%d"), this->_meeting.ID);
+	_RecordsetPtr reSet = DBManager::QueryForRecordset(sql);
+	if(reSet->GetRecordCount() == 0) return v_match;
+	reSet->MoveFirst();
+	while(!reSet->adoEOF){
+		v_match.push_back(Match(reSet));
+		reSet->MoveNext();
+	}
+	reSet->Close();
+	return v_match;
+}
+
+
+//MatchType
+MatchType::MatchType(void)
+{
+}
+
+MatchType::MatchType(_RecordsetPtr reSet){
+	this->ID = reSet->GetCollect("id");
+	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("name"));
+	this->Type = reSet->GetCollect("type");
+}
+
+MatchType::~MatchType(void)
+{
+}
+
+CString MatchType::GetAddNewSQL(){
+	CString sql;
+	sql.Format(_T("insert into match_type (name,type) values ('%s',%d)"),
+				  Name, Type);
+	return sql;
+}
+
+CString MatchType::GetDeleteSQL(){
+	CString sql;
+	sql.Format(_T("delete from match_type where id=%ld"), ID);
+	return sql;
+}
+
+CString MatchType::GetUpdateSQL(){
+	CString sql;
+	sql.Format(_T("update match_type set name='%s',type=%d where id=%ld"),
+		Name, Type, ID);
+	return sql;
+}
+
+CString MatchType::GetCountSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from match_type where name='%s'"), Name);
+	return sql;
+}
+
+CString MatchType::GetCountNoCuSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from match_type where name='%s' and id<>%d"), Name, ID);
+	return sql;
+}
+
+CString MatchType::GetIDSQL(){
+	CString sql;
+	sql.Format(_T("select id  from match_type where name='%s'"), Name);
+	return sql;
+}
+
+vector<MatchType> MatchType::GetAll(){
+	vector<MatchType> v_matchType;
+	_RecordsetPtr reSet = DBManager::QueryForRecordset(_T("select * from match_type"));
+	if(reSet->GetRecordCount() == 0) return v_matchType;
+	reSet->MoveFirst();
+	while(!reSet->adoEOF){
+		v_matchType.push_back(MatchType(reSet));
+		reSet->MoveNext();
+	}
+	reSet->Close();
+	return v_matchType;
+}
