@@ -227,3 +227,43 @@ void MatchView::AddMatToList(Match* mat)
 	list_match.InsertItem(&vitem);
 	list_match.SetItemText(vitem.iItem, 1, mat->StartDate);
 }
+
+// Dialog_Match_Prop 对话框
+
+IMPLEMENT_DYNAMIC(Dialog_Match_Prop, CDialogEx)
+
+Dialog_Match_Prop::Dialog_Match_Prop(CWnd* pParent /*=NULL*/)
+	: CDialogEx(Dialog_Match_Prop::IDD, pParent)
+{
+
+}
+
+Dialog_Match_Prop::~Dialog_Match_Prop()
+{
+}
+
+void Dialog_Match_Prop::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_MATCH_NAME, _match.Name);
+	DDX_Text(pDX, IDC_MATCH_ADD, _match.Address);
+	DDX_DateTimeCtrl(pDX, IDC_MATCH_DATE, _match.StartDate);
+	DDX_CBString(pDX, IDC_MATCH_SEX, _match.Sex);
+	DDX_Text(pDX, IDC_M_MINAGE, _match.Minage);
+	DDX_Text(pDX, IDC_M_MAXAGE, _match.Maxage);
+}
+
+
+BEGIN_MESSAGE_MAP(Dialog_Match_Prop, CDialogEx)
+	ON_BN_CLICKED(IDOK, &Dialog_Match_Prop::OnBnClickedOk)
+END_MESSAGE_MAP()
+
+
+// Dialog_Match_Prop 消息处理程序
+
+
+void Dialog_Match_Prop::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDialogEx::OnOK();
+}

@@ -33,6 +33,7 @@ public:
 	afx_msg void OnBnClickedBuMAdd();
 	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedBuMMod();
 };
 #pragma once
 

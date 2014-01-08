@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CDialog_Meeting, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &CDialog_Meeting::OnNMDblclkList1)
 	//ON_NOTIFY(NM_CLICK, IDC_LIST1, &CDialog_Meeting::OnNMClickList1)
 	ON_BN_CLICKED(IDOK, &CDialog_Meeting::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BU_M_MOD, &CDialog_Meeting::OnBnClickedBuMMod)
 END_MESSAGE_MAP()
 
 
@@ -99,19 +100,8 @@ void CDialog_Meeting::OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
-	CDialog_Add_Meeting dia_Modify(TRUE);
-	dia_Modify.currMeeting.ID = list_meeting.GetItemData(pNMItemActivate->iItem);
-	dia_Modify.currMeeting.Name = list_meeting.GetItemText(pNMItemActivate->iItem, 0);
-	dia_Modify.currMeeting.StartDate = list_meeting.GetItemText(pNMItemActivate->iItem, 1);
-	dia_Modify.currMeeting.Address = list_meeting.GetItemText(pNMItemActivate->iItem, 2);	
-	int n_Modal = dia_Modify.DoModal();
-	if(n_Modal == IDOK){
-		list_meeting.SetItemText(pNMItemActivate->iItem, 0, dia_Modify.currMeeting.Name);
-		list_meeting.SetItemText(pNMItemActivate->iItem, 1, dia_Modify.currMeeting.StartDate);
-		list_meeting.SetItemText(pNMItemActivate->iItem, 2, dia_Modify.currMeeting.Address);
-	}
-
 	*pResult = 0;
+	OnBnClickedOk();
 }
 
 void CDialog_Meeting::OnBnClickedOk()
@@ -188,4 +178,25 @@ void CDialog_Add_Meeting::OnBnClickedOk()
 			return;
 		}
 	CDialogEx::OnOK();
+}
+
+void CDialog_Meeting::OnBnClickedBuMMod()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int s = list_meeting.GetSelectionMark();
+	if(s == -1){
+		MessageBox(_T("请选择一个运动会！"), _T("提示"), MB_OK | MB_ICONWARNING);
+		return;
+	}
+
+	CDialog_Add_Meeting dia_Modify(TRUE);
+	dia_Modify.currMeeting.ID = list_meeting.GetItemData(s);
+	dia_Modify.currMeeting.Name = list_meeting.GetItemText(s, 0);
+	dia_Modify.currMeeting.StartDate = list_meeting.GetItemText(s, 1);
+	dia_Modify.currMeeting.Address = list_meeting.GetItemText(s, 2);	
+	if(dia_Modify.DoModal() == IDOK){
+		list_meeting.SetItemText(s, 0, dia_Modify.currMeeting.Name);
+		list_meeting.SetItemText(s, 1, dia_Modify.currMeeting.StartDate);
+		list_meeting.SetItemText(s, 2, dia_Modify.currMeeting.Address);
+	}
 }
