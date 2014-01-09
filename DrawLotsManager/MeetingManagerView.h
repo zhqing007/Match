@@ -32,6 +32,7 @@ public:
 
 	virtual void OnInitialUpdate();
 	void AddMatToList(Match*);
+	afx_msg void OnBnClickedBuMAdd();
 };
 
 
@@ -99,11 +100,11 @@ class Dialog_Match_Prop : public CDialogEx
 	DECLARE_DYNAMIC(Dialog_Match_Prop)
 
 public:
-	Dialog_Match_Prop(CWnd* pParent = NULL);   // 标准构造函数
+	Dialog_Match_Prop(BOOL _isModify = FALSE, CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~Dialog_Match_Prop();
 
 // 对话框数据
-	enum { IDD = IDD_MEETING_PROP };
+	enum { IDD = IDD_MATCH_PROP };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
@@ -111,5 +112,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	Match _match;
+	BOOL isModify;
 	afx_msg void OnBnClickedOk();
 };

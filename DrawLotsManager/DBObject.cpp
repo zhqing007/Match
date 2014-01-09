@@ -334,13 +334,14 @@ CString Match::GetUpdateSQL(){
 
 CString Match::GetCountSQL(){
 	CString sql;
-	sql.Format(_T("select count(*) as cou from _match where name='%s'"), Name);
+	sql.Format(_T("select count(*) as cou from _match where name='%s' and meeting_id=%d"), Name, _meeting.ID);
 	return sql;
 }
 
 CString Match::GetCountNoCuSQL(){
 	CString sql;
-	sql.Format(_T("select count(*) as cou from _match where name='%s' and id<>%d"), Name, ID);
+	sql.Format(_T("select count(*) as cou from _match where name='%s' and meeting_id=%d and id<>%d"),
+		Name, _meeting.ID, ID);
 	return sql;
 }
 

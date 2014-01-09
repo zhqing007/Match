@@ -129,9 +129,8 @@ CDialog_Add_Meeting::CDialog_Add_Meeting(BOOL _isModify, CWnd* pParent /*=NULL*/
 	//, t_MeetingStart(CTime::GetCurrentTime())
 	, isModify(_isModify)
 {
-	if(!isModify){
+	if(!isModify)
 		currMeeting.StartDate = CTime::GetCurrentTime().Format("%Y/%m/%d");
-	}
 }
 
 CDialog_Add_Meeting::~CDialog_Add_Meeting()

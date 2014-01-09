@@ -27,6 +27,7 @@ void MatchView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(MatchView, CFormView)
+	ON_BN_CLICKED(IDC_BU_M_ADD, &MatchView::OnBnClickedBuMAdd)
 END_MESSAGE_MAP()
 
 
@@ -232,10 +233,16 @@ void MatchView::AddMatToList(Match* mat)
 
 IMPLEMENT_DYNAMIC(Dialog_Match_Prop, CDialogEx)
 
-Dialog_Match_Prop::Dialog_Match_Prop(CWnd* pParent /*=NULL*/)
+Dialog_Match_Prop::Dialog_Match_Prop(BOOL _isModify, CWnd* pParent /*=NULL*/)
 	: CDialogEx(Dialog_Match_Prop::IDD, pParent)
+	,isModify(_isModify)
 {
-
+	if(!isModify){
+		_match.StartDate = CTime::GetCurrentTime().Format("%Y/%m/%d");
+		_match.Minage = 0;
+		_match.Maxage = 0;
+		_match.Sex = "不限";
+	}
 }
 
 Dialog_Match_Prop::~Dialog_Match_Prop()
@@ -265,5 +272,34 @@ END_MESSAGE_MAP()
 void Dialog_Match_Prop::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	if(_match.Name.Trim().GetLength() == 0){
+		MessageBox(_T("比赛名称不能为空！"), _T("提示"), MB_OK | MB_ICONWARNING);
+		return;
+	}
+	if(this->isModify){
+		if(_match.Update() == NOTONLYONE){
+			MessageBox(_T("已经存在同名的比赛名称，请修改！"),
+				_T("提示"), MB_OK | MB_ICONWARNING);
+			return;
+		}
+	}
+	else
+		if(_match.AddNew() == NOTONLYONE){
+			MessageBox(_T("已经存在同名的比赛名称，请修改！"),
+				_T("提示"), MB_OK | MB_ICONWARNING);
+			return;
+		}
+
 	CDialogEx::OnOK();
+}
+
+void MatchView::OnBnClickedBuMAdd()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	Dialog_Match_Prop d_Ma_Prop;
+	d_Ma_Prop._match._meeting.ID = this->meetingID;
+	d_Ma_Prop._match._matchType.ID = 0;
+	if(d_Ma_Prop.DoModal() == IDOK)
+		AddMatToList(&(d_Ma_Prop._match));
 }
