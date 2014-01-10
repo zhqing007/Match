@@ -33,6 +33,8 @@ public:
 	virtual void OnInitialUpdate();
 	void AddMatToList(Match*);
 	afx_msg void OnBnClickedBuMAdd();
+	afx_msg void OnBnClickedBuMDel();
+	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 

@@ -28,6 +28,8 @@ void MatchView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(MatchView, CFormView)
 	ON_BN_CLICKED(IDC_BU_M_ADD, &MatchView::OnBnClickedBuMAdd)
+	ON_BN_CLICKED(IDC_BU_M_DEL, &MatchView::OnBnClickedBuMDel)
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &MatchView::OnNMDblclkList1)
 END_MESSAGE_MAP()
 
 
@@ -302,4 +304,36 @@ void MatchView::OnBnClickedBuMAdd()
 	d_Ma_Prop._match._matchType.ID = 0;
 	if(d_Ma_Prop.DoModal() == IDOK)
 		AddMatToList(&(d_Ma_Prop._match));
+}
+
+
+void MatchView::OnBnClickedBuMDel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if(MessageBox(_T("确定删除所选比赛吗？"), _T("确认"), MB_YESNO | MB_ICONQUESTION) == IDNO)
+		return;
+	int n_se = list_match.GetSelectionMark();
+	Match mat;
+	mat.ID = list_match.GetItemData(n_se);
+	mat.Delete();
+	list_match.DeleteItem(n_se);
+}
+
+
+void MatchView::OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	if(pNMItemActivate->iItem < 0) return;
+	Match mat;
+	mat.ID = list_match.GetItemData(pNMItemActivate->iItem);
+	vector<Match> v_m = mat.Query();
+	Dialog_Match_Prop d_Ma_Prop(TRUE);
+	d_Ma_Prop._match = v_m[0];
+	if(d_Ma_Prop.DoModal() == IDOK){
+		list_match.SetItemText(pNMItemActivate->iItem, 0, d_Ma_Prop._match.Name);
+		list_match.SetItemText(pNMItemActivate->iItem, 1, d_Ma_Prop._match.StartDate);
+	}
+
+	*pResult = 0;
 }

@@ -207,7 +207,7 @@ void CDialog_Org_Property::OnBnClickedOk()
 void CDialog_Org::OnBnClickedButtonDelete()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	if(MessageBox(_T("确定删除所选队吗？"), _T("确认"), MB_YESNO) == IDNO)
+	if(MessageBox(_T("确定删除所选队吗？"), _T("确认"), MB_YESNO | MB_ICONQUESTION) == IDNO)
 		return;
 	int n_se = list_org.GetSelectionMark();
 	Organization org;

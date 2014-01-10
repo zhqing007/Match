@@ -221,6 +221,10 @@ vector<Athlete> Athlete::Query(){
 //Meeting
 Meeting::Meeting(void)
 {
+	this->ID = -1;
+	this->Name = _T("");
+	this->StartDate = _T("");
+	this->Address = _T("");
 }
 
 Meeting::Meeting(_RecordsetPtr reSet){
@@ -290,6 +294,13 @@ vector<Meeting> Meeting::GetAll(){
 //Match
 Match::Match(void)
 {
+	this->ID = -1;
+	this->Name = _T("");
+	this->StartDate = _T("");
+	this->Address = _T("");
+	this->Sex =  _T("");
+	this->Minage = -1;
+	this->Maxage = -1;
 }
 
 Match::Match(_RecordsetPtr reSet){
@@ -353,8 +364,16 @@ CString Match::GetIDSQL(){
 
 vector<Match> Match::Query(){
 	vector<Match> v_match;
-	CString sql;
-	sql.Format(_T("select * from _match where meeting_id=%d"), this->_meeting.ID);
+	CString sql = _T("select * from _match where 1=1 ");
+	CString strid;
+	if(this->_meeting.ID > 0){		
+		strid.Format(_T("and meeting_id=%ld "), this->_meeting.ID);
+		sql.Append(strid);
+	}
+	if(this->ID > 0){		
+		strid.Format(_T("and id=%ld "), this->ID);
+		sql.Append(strid);
+	}
 	_RecordsetPtr reSet = DBManager::QueryForRecordset(sql);
 	if(reSet->GetRecordCount() == 0) return v_match;
 	reSet->MoveFirst();
@@ -370,6 +389,9 @@ vector<Match> Match::Query(){
 //MatchType
 MatchType::MatchType(void)
 {
+	this->ID = -1;
+	this->Name = _T("");
+	this->Type =-1;
 }
 
 MatchType::MatchType(_RecordsetPtr reSet){
