@@ -454,3 +454,73 @@ vector<MatchType> MatchType::GetAll(){
 	reSet->Close();
 	return v_matchType;
 }
+
+//Troop
+Troop::Troop(void)
+{
+	this->ID = -1;
+	this->Name = _T("");
+}
+
+Troop::Troop(_RecordsetPtr reSet){
+	this->ID = reSet->GetCollect("id");
+	this->Name = (LPWSTR)(_bstr_t)(reSet->GetCollect("name"));
+	this->_match.ID = reSet->GetCollect("match_id");
+}
+
+Troop::~Troop(void)
+{
+}
+
+CString Troop::GetAddNewSQL(){
+	CString sql;
+	sql.Format(_T("insert into troop (name,match_id) values ('%s',%d)"),
+				  Name, _match.ID);
+	return sql;
+}
+
+CString Troop::GetDeleteSQL(){
+	CString sql;
+	sql.Format(_T("delete from troop where id=%ld"), ID);
+	return sql;
+}
+
+CString Troop::GetUpdateSQL(){
+	CString sql;
+	sql.Format(_T("update troop set name='%s' where id=%ld"),
+		Name, ID);
+	return sql;
+}
+
+CString Troop::GetCountSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from troop where name='%s'"), Name);
+	return sql;
+}
+
+CString Troop::GetCountNoCuSQL(){
+	CString sql;
+	sql.Format(_T("select count(*) as cou from troop where name='%s' and id<>%d"), Name, ID);
+	return sql;
+}
+
+CString Troop::GetIDSQL(){
+	CString sql;
+	sql.Format(_T("select id  from troop where name='%s' and match_id=%d"), Name, _match.ID);
+	return sql;
+}
+
+vector<Troop> Troop::Query(){
+	vector<Troop> v_troop;
+	CString sql;
+	sql.Format(_T("select * from troop where match_id=%d"), _match.ID);
+	_RecordsetPtr reSet = DBManager::QueryForRecordset(sql);
+	if(reSet->GetRecordCount() == 0) return v_troop;
+	reSet->MoveFirst();
+	while(!reSet->adoEOF){
+		v_troop.push_back(Troop(reSet));
+		reSet->MoveNext();
+	}
+	reSet->Close();
+	return v_troop;
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "afxcmn.h"
 #include "DBObject.h"
+#include "afxwin.h"
 
 class MatchOrgAthView;
 // MatchView 窗体视图
@@ -35,6 +36,7 @@ public:
 	afx_msg void OnBnClickedBuMAdd();
 	afx_msg void OnBnClickedBuMDel();
 	afx_msg void OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 
@@ -60,7 +62,20 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
-	DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()	
+public:
+	CStatic cs_MatchName;
+
+	afx_msg void OnBnClickedBuSubTr();
+	afx_msg void OnBnClickedSplitAddtr();
+	virtual void OnInitialUpdate();
+	void SetMatchID(long matchID, CString matchName);
+private:
+	LONG matchID;
+	CListBox lbox_troop;
+	CSplitButton splBu_AddTr;
+
+	void AddTroToList(Troop* tro);
 };
 
 // MeetingManagerView 视图

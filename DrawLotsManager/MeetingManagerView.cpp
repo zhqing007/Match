@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(MatchView, CFormView)
 	ON_BN_CLICKED(IDC_BU_M_ADD, &MatchView::OnBnClickedBuMAdd)
 	ON_BN_CLICKED(IDC_BU_M_DEL, &MatchView::OnBnClickedBuMDel)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, &MatchView::OnNMDblclkList1)
+	ON_NOTIFY(NM_CLICK, IDC_LIST1, &MatchView::OnNMClickList1)
 END_MESSAGE_MAP()
 
 
@@ -69,9 +70,14 @@ MatchOrgAthView::~MatchOrgAthView()
 void MatchOrgAthView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_TROOP_LIST, lbox_troop);
+	DDX_Control(pDX, IDC_SPLIT_ADDTR, splBu_AddTr);
+	DDX_Control(pDX, IDC_S_MATCHNAME, cs_MatchName);
 }
 
 BEGIN_MESSAGE_MAP(MatchOrgAthView, CFormView)
+	ON_BN_CLICKED(IDC_BU_SUB_TR, &MatchOrgAthView::OnBnClickedBuSubTr)
+	ON_BN_CLICKED(IDC_SPLIT_ADDTR, &MatchOrgAthView::OnBnClickedSplitAddtr)
 END_MESSAGE_MAP()
 
 
@@ -324,6 +330,7 @@ void MatchView::OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
 	if(pNMItemActivate->iItem < 0) return;
 	Match mat;
 	mat.ID = list_match.GetItemData(pNMItemActivate->iItem);
@@ -334,6 +341,55 @@ void MatchView::OnNMDblclkList1(NMHDR *pNMHDR, LRESULT *pResult)
 		list_match.SetItemText(pNMItemActivate->iItem, 0, d_Ma_Prop._match.Name);
 		list_match.SetItemText(pNMItemActivate->iItem, 1, d_Ma_Prop._match.StartDate);
 	}
+}
 
+
+void MatchOrgAthView::SetMatchID(long matchID, CString matchName)
+{
+	lbox_troop.ResetContent();
+	Troop tro;
+	tro._match.ID = this->matchID = matchID;
+	cs_MatchName.SetWindowText(matchName);
+	vector<Troop> v_mat = tro.Query();
+	vector<Troop>::iterator i_d;
+	for(i_d = v_mat.begin(); i_d != v_mat.end(); ++i_d)
+		AddTroToList(&(*i_d));
+}
+
+
+void MatchView::OnNMClickList1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
 	*pResult = 0;
+	if(pNMItemActivate->iItem < 0) return;
+	this->rightView->SetMatchID(list_match.GetItemData(pNMItemActivate->iItem),
+		list_match.GetItemText(pNMItemActivate->iItem, 0));
+}
+
+void MatchOrgAthView::OnBnClickedBuSubTr()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+void MatchOrgAthView::AddTroToList(Troop* tro)
+{
+	int c = lbox_troop.GetCount();
+	lbox_troop.InsertString(c, tro->Name);
+	lbox_troop.SetItemData(c, tro->ID);
+}
+
+
+void MatchOrgAthView::OnBnClickedSplitAddtr()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void MatchOrgAthView::OnInitialUpdate()
+{
+	CFormView::OnInitialUpdate();
+
+	// TODO: 在此添加专用代码和/或调用基类
+	splBu_AddTr.SetDropDownMenu(IDR_ADDTR_SPLITBU, 0);
 }

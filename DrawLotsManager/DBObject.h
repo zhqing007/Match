@@ -144,3 +144,25 @@ protected :
 	CString GetCountNoCuSQL();
 	CString GetIDSQL();
 };
+
+class Troop : public DBObjcet
+{
+public:
+	Troop(void);	
+	~Troop(void);
+	vector<Troop> Query();
+
+	CString Name;
+	Match _match;
+
+private:
+	Troop(_RecordsetPtr);
+
+protected :
+	CString GetUpdateSQL();
+	CString GetAddNewSQL();
+	CString GetDeleteSQL();
+	CString GetCountSQL();
+	CString GetCountNoCuSQL();
+	CString GetIDSQL();
+};
