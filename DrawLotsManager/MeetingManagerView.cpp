@@ -78,6 +78,7 @@ void MatchOrgAthView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(MatchOrgAthView, CFormView)
 	ON_BN_CLICKED(IDC_BU_SUB_TR, &MatchOrgAthView::OnBnClickedBuSubTr)
 	ON_BN_CLICKED(IDC_SPLIT_ADDTR, &MatchOrgAthView::OnBnClickedSplitAddtr)
+	ON_LBN_DBLCLK(IDC_TROOP_LIST, &MatchOrgAthView::OnLbnDblclkTroopList)
 END_MESSAGE_MAP()
 
 
@@ -101,13 +102,6 @@ void MatchOrgAthView::Dump(CDumpContext& dc) const
 // MatchOrgAthView 消息处理程序
 
 // MeetingManagerView.cpp : 实现文件
-//
-
-#include "stdafx.h"
-#include "DrawLotsManager.h"
-#include "MeetingManagerView.h"
-
-
 // MeetingManagerView
 
 IMPLEMENT_DYNCREATE(MeetingManagerView, CView)
@@ -383,6 +377,11 @@ void MatchOrgAthView::AddTroToList(Troop* tro)
 void MatchOrgAthView::OnBnClickedSplitAddtr()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	Troop tro;
+	tro._match.ID = matchID;
+	Dialog_TrName trn(&tro);
+	if(trn.DoModal() == IDOK)
+		AddTroToList(&tro);
 }
 
 
@@ -393,3 +392,74 @@ void MatchOrgAthView::OnInitialUpdate()
 	// TODO: 在此添加专用代码和/或调用基类
 	splBu_AddTr.SetDropDownMenu(IDR_ADDTR_SPLITBU, 0);
 }
+
+
+void MatchOrgAthView::OnLbnDblclkTroopList()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int sel = lbox_troop.GetCurSel();
+	if(sel < 0) return;
+	Troop tro;
+	tro._match.ID = matchID;
+	tro.ID = lbox_troop.GetItemData(sel);
+	lbox_troop.GetText(sel, tro.Name);
+	Dialog_TrName trn(&tro, TRUE);
+	if(trn.DoModal() == IDOK){
+		lbox_troop.DeleteString(sel);
+		lbox_troop.InsertString(sel, tro.Name);
+		lbox_troop.SetItemData(sel, tro.ID);
+	}
+}
+
+
+
+// D:\MYCPP\Match\DrawLotsManager\MeetingManagerView.cpp : 实现文件
+//
+
+// Dialog_TrName 对话框
+
+IMPLEMENT_DYNAMIC(Dialog_TrName, CDialogEx)
+
+Dialog_TrName::Dialog_TrName(Troop* _tr, BOOL _isModify, CWnd* pParent /*=NULL*/)
+	: CDialogEx(Dialog_TrName::IDD, pParent)
+	, tr(_tr)
+	, isModify(_isModify)
+{
+
+}
+
+Dialog_TrName::~Dialog_TrName()
+{
+}
+
+void Dialog_TrName::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_TRNAME, tr->Name);
+}
+
+
+BEGIN_MESSAGE_MAP(Dialog_TrName, CDialogEx)
+	ON_BN_CLICKED(IDOK, &Dialog_TrName::OnBnClickedOk)
+END_MESSAGE_MAP()
+
+
+// Dialog_TrName 消息处理程序
+
+
+void Dialog_TrName::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	int re;
+	if(isModify)
+		re = tr->Update(FALSE);
+	else
+		re = tr->AddNew(FALSE);
+	if(re == NOTONLYONE){
+		MessageBox(_T("已经存在相同的队名，请修改！"), _T("提示"), MB_OK | MB_ICONWARNING);
+		return;
+	}
+	CDialogEx::OnOK();
+}
+

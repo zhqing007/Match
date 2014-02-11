@@ -76,6 +76,8 @@ private:
 	CSplitButton splBu_AddTr;
 
 	void AddTroToList(Troop* tro);
+public:
+	afx_msg void OnLbnDblclkTroopList();
 };
 
 // MeetingManagerView 视图
@@ -131,4 +133,31 @@ public:
 	Match _match;
 	BOOL isModify;
 	afx_msg void OnBnClickedOk();
+};
+#pragma once
+
+
+// Dialog_TrName 对话框
+
+class Dialog_TrName : public CDialogEx
+{
+	DECLARE_DYNAMIC(Dialog_TrName)
+
+public:
+	Dialog_TrName(Troop* _tr, BOOL _isModify = FALSE, CWnd* pParent = NULL);   // 标准构造函数
+	virtual ~Dialog_TrName();	
+
+// 对话框数据
+	enum { IDD = IDD_TRNAME };
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+
+	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedOk();
+
+private:
+	Troop* tr;
+	BOOL isModify;
 };
